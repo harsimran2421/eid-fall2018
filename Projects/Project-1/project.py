@@ -201,7 +201,7 @@ class project(QDialog):
             if i == 6:
                 i = 0
         finally:
-            #Timer to run the code after every 3 seconds 
+            #Timer to run the code after every 3 seconds
             QTimer.singleShot(3000,self.get_temp)
     def get_hum(self):
         '''
@@ -251,7 +251,7 @@ class project(QDialog):
         if h == None and t == None:
             self.label_temp.setText('Not connected')
         else:
-            self.label_temp.setText(str(round(t,3)))
+            self.label_temp.setText(str(round(t,3))+"C")
         #print timestamp for the latest request
         self.temp_time.setText(strftime('%H:%M:%S'))
     def on_pushButton_hum_clicked(self):
@@ -262,7 +262,7 @@ class project(QDialog):
         if h == None and t == None:
             self.label_hum.setText('Not connected') 
         else:
-            self.label_hum.setText(str(round(h,3)))
+            self.label_hum.setText(str(round(h,3))+"%")
         #print timestamp for the latest request
         self.hum_time.setText(strftime('%H:%M:%S'))
 app = QApplication(sys.argv)
