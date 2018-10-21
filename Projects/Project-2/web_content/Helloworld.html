@@ -1,4 +1,11 @@
 <!doctype html>
+<!--Author: Harsimransingh  Bindra
+    Date: 10/21/2018
+    File: HTML file containing the webpage code for project 2 diplaying the temperature and humidity values retrieved from the database on request
+    References:
+              https://os.mbed.com/cookbook/Websockets-Server
+              http://jqueryui.com/
+              http://api.jquery.com/click/-->
 <html>
   <head>
     <title>WebSockets Hello World</title>
@@ -7,12 +14,13 @@
 body {
   text-align: center;
   min-width: 500px;
+  background-image: url("background.jpg");
 }
     </style>
     <script src="http://code.jquery.com/jquery.min.js"></script>
     <script>
 
-// log function
+/*log function to log data on webpage*/
 log = function(data){
   console.log(data);
 };
@@ -33,9 +41,8 @@ $(document).ready(function () {
 
     // Handle incoming websocket message callback
     ws.onmessage = function(evt) {
-        //log("Message Received: " + evt.data)
-        //$("div#message_details").message.val(evt.data)
       var recieve_msg = evt.data;
+      //Conditional loops to print data in required text field as requested by the user
       if(recieve_msg.substr(0,19)== 'Temperature average')
       {
         $("#temperature_average").html("Average: " + recieve_msg.substr(38) + " Time: " + recieve_msg.substr(19,8) + " Date:" + recieve_msg.substr(30,8));
@@ -68,59 +75,71 @@ $(document).ready(function () {
       {
         $("#humidity").html("Humidity:  " + recieve_msg.substr(27) + "  Time: " + recieve_msg.substr(8,8) + " Date:" + recieve_msg.substr(19,8));
       }
-      //alert("message received: " + recieve_msg);
     };
     // Close Websocket callback
     ws.onclose = function(evt) {
       log("***Connection Closed***");
       alert("Connection close");
+      //Display home page again when connection is closed
       $("div#connection_details").show(); 
       $("#host").css("background", "#ff0000"); 
       $("#port").css("background", "#ff0000"); 
       $("#uri").css("background",  "#ff0000");
+      //Hide main webpage from the user
       $("div#value_details").hide();
     };
 
     // Open Websocket callback
     ws.onopen = function(evt) { 
+      //hide login page from the user
       $("div#connection_details").hide(); 
+      //display main webpage to the user
       $("div#value_details").show();
       log("***Connection Opened***");
     };
   });
-
+  //Button events to handle immediate temperature request
   $("#btn1").click(function(evt) {
     log("Sending Message: "+$("#btn1").val());
     ws.send($("#btn1").val());
   });
+
+  //Button event to handle temperature average request
   $("#btn2").click(function(evt) {
     log("Sending Message: "+$("#btn2").val());
     ws.send($("#btn2").val());
   });
+  //Button event to handle minimum temperature value request
   $("#btn3").click(function(evt) {
     log("Sending Message: "+$("#btn3").val());
     ws.send($("#btn3").val());
   });
+  //Button event to handle maximum temperature value request
   $("#btn4").click(function(evt) {
     log("Sending Message: "+$("#btn4").val());
     ws.send($("#btn4").val());
   });
+  //Button event to handle immideate humidity value request
   $("#btn5").click(function(evt) {
     log("Sending Message: "+$("#btn5").val());
     ws.send($("#btn5").val());
   });
+  //Button event to handle humidity average value request
   $("#btn6").click(function(evt) {
     log("Sending Message: "+$("#btn6").val());
     ws.send($("#btn6").val());
   });
+  //Button event to handle minimum humdity value request
   $("#btn7").click(function(evt) {
     log("Sending Message: "+$("#btn7").val());
     ws.send($("#btn7").val());
   });
+  //Button event to handle maximum humdity value request
   $("#btn8").click(function(evt) {
     log("Sending Message: "+$("#btn8").val());
     ws.send($("#btn8").val());
   });
+  //Button event to handle temperature unit conversion request
   $("#btn9").click(function(evt) {
     log("Sending Message: "+$("#btn9").val());
     ws.send($("#btn9").val());
@@ -129,7 +148,7 @@ $(document).ready(function () {
 });
     </script>
   </head>
-
+  <!--Body containing the elements present on the webpage -->
   <body>
     <h1>Project 2</h1>
     <div id="value_details">

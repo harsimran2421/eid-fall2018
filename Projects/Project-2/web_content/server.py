@@ -100,8 +100,8 @@ class WSHandler(tornado.websocket.WebSocketHandler):
                     self.write_message(message+'00:00:00   00/00/00'+'Not Connected')
                 else:
                     print(row[0]," ",row[1], row[2], row[3])
-                    print('sending back message: %s' % (message+row[2]+row[1]))
-                    self.write_message(message+row[2]+row[1])
+                    print('sending back message: %s' % (message+row[2]+row[1]+' %'))
+                    self.write_message(message+row[2]+row[1] + ' %')
         elif message == 'Humidity average':
             cur.execute("SELECT * FROM humidity ORDER by id DESC LIMIT 1")
             for row in cur.fetchall():
@@ -112,7 +112,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
                     for row in cur.fetchall():
                         print(row[0]," ",row[1], row[2])
                         print('sending back message: %s' % (message+row[2]+row[1]))
-                        self.write_message(message+row[2]+row[1])
+                        self.write_message(message+row[2]+row[1] + ' %')
         elif message == 'Humidity minimum':
             cur.execute("SELECT * FROM humidity ORDER by id DESC LIMIT 1")
             for row in cur.fetchall():
@@ -130,7 +130,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
                 else:
                     print(row[0]," ",row[1], row[2], row[3])
                     print('sending back message: %s' % (message+row[2]+row[4]))
-                    self.write_message(message+row[2]+row[4])
+                    self.write_message(message+row[2]+row[4] + ' %')
 
     def on_close(self):
         print('connection closed')
