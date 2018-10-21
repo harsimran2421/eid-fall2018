@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+  <head>
+    <title>WebSockets Hello World</title>
+    <meta charset="utf-8" />
+    <style type="text/css">
+body {
+  text-align: center;
+  min-width: 500px;
+}
+    </style>
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script>
+
+// log function
+log = function(data){
+  console.log(data);
+};
+
+$(document).ready(function () {
+    var ws;
+
+    $("div#value_details").hide();
+  $("#open").click(function(evt) {
+    evt.preventDefault();
+
+    var host = $("#host").val();
+    var port = $("#port").val();
+    var uri = $("#uri").val();
+
+    // create websocket instance
+    ws = new WebSocket("ws://" + host + ":" + port + uri);
+
+    // Handle incoming websocket message callback
+    ws.onmessage = function(evt) {
+        //log("Message Received: " + evt.data)
+        //$("div#message_details").message.val(evt.data)
+      var recieve_msg = evt.data;
+      if(recieve_msg.substr(0,19)== 'Temperature average')
+      {
+        $("#temperature_average").html("Average: " + recieve_msg.substr(38) + " Time: " + recieve_msg.substr(19,8) + " Date:" + recieve_msg.substr(30,8));
+      }
+      else if(recieve_msg.substr(0,19)== 'Temperature minimum')
+      {
+        $("#temperature_minimum").html("Minimum: " + recieve_msg.substr(38) + "  Time: " + recieve_msg.substr(19,8) + " Date:" + recieve_msg.substr(30,8));
+      } 
+      else if(recieve_msg.substr(0,19)== 'Temperature maximum')
+      {
+        $("#temperature_maximum").html("Maximum: " + recieve_msg.substr(38) + "  Time: " + recieve_msg.substr(19,8) + " Date:" + recieve_msg.substr(30,8));
+      }
+      else if(recieve_msg.substr(0,16)== 'Humidity average')
+      {
+        $("#humidity_average").html("Average:  " + recieve_msg.substr(35) + "  Time: " + recieve_msg.substr(16,8) + " Date:" + recieve_msg.substr(27,8));
+      }
+      else if(recieve_msg.substr(0,16)== 'Humidity minimum')
+      {
+        $("#humidity_minimum").html("Minimum:  " + recieve_msg.substr(35) + "  Time: " + recieve_msg.substr(16,8) + " Date:" + recieve_msg.substr(27,8));
+      }
+      else if(recieve_msg.substr(0,16)== 'Humidity maximum')
+      {
+        $("#humidity_maximum").html("Maximum:  " + recieve_msg.substr(35) + "  Time: " + recieve_msg.substr(16,8) + " Date:" + recieve_msg.substr(27,8));
+      }
+      else if(recieve_msg.substr(0,11) == 'Temperature')
+      {
+        $("#temperature").html("Temperature: " + recieve_msg.substr(30) + "  Time: " + recieve_msg.substr(11,8) + " Date:" + recieve_msg.substr(22,8));
+      }
+      else if(recieve_msg.substr(0,8)== 'Humidity')
+      {
+        $("#humidity").html("Humidity:  " + recieve_msg.substr(27) + "  Time: " + recieve_msg.substr(8,8) + " Date:" + recieve_msg.substr(19,8));
+      }
+      //alert("message received: " + recieve_msg);
+    };
+    // Close Websocket callback
+    ws.onclose = function(evt) {
+      log("***Connection Closed***");
+      alert("Connection close");
+      $("div#connection_details").show(); 
+      $("#host").css("background", "#ff0000"); 
+      $("#port").css("background", "#ff0000"); 
+      $("#uri").css("background",  "#ff0000");
+      $("div#value_details").hide();
+    };
+
+    // Open Websocket callback
+    ws.onopen = function(evt) { 
+      $("div#connection_details").hide(); 
+      $("div#value_details").show();
+      log("***Connection Opened***");
+    };
+  });
+
+  $("#btn1").click(function(evt) {
+    log("Sending Message: "+$("#btn1").val());
+    ws.send($("#btn1").val());
+  });
+  $("#btn2").click(function(evt) {
+    log("Sending Message: "+$("#btn2").val());
+    ws.send($("#btn2").val());
+  });
+  $("#btn3").click(function(evt) {
+    log("Sending Message: "+$("#btn3").val());
+    ws.send($("#btn3").val());
+  });
+  $("#btn4").click(function(evt) {
+    log("Sending Message: "+$("#btn4").val());
+    ws.send($("#btn4").val());
+  });
+  $("#btn5").click(function(evt) {
+    log("Sending Message: "+$("#btn5").val());
+    ws.send($("#btn5").val());
+  });
+  $("#btn6").click(function(evt) {
+    log("Sending Message: "+$("#btn6").val());
+    ws.send($("#btn6").val());
+  });
+  $("#btn7").click(function(evt) {
+    log("Sending Message: "+$("#btn7").val());
+    ws.send($("#btn7").val());
+  });
+  $("#btn8").click(function(evt) {
+    log("Sending Message: "+$("#btn8").val());
+    ws.send($("#btn8").val());
+  });
+  $("#btn9").click(function(evt) {
+    log("Sending Message: "+$("#btn9").val());
+    ws.send($("#btn9").val());
+  });
+
+});
+    </script>
+  </head>
+
+  <body>
+    <h1>Project 2</h1>
+    <div id="value_details">
+      <h2 style="float:left;width:50%">Temperature Readings</h1>
+      <h2 style="float: right; width: 50%">Humidity Readings</h1><br />
+      <p style="float:left;width:50%" id="temperature">Temperature:----------</p> 
+      <p style="float: right; width: 50%" id="humidity">Humidity:----------</p><br /> 
+      <button style="align:right; position: relative; right: 120px; border-radius: 30px; width:25%" id="btn1" value ="Temperature">Request</button>
+      <button style="align:left ;position: relative; left: 120px; border-radius: 30px; width:25%" id="btn5" value = "Humidity">Request</button><br />
+      <p style="float:left;width:50%" id="temperature_average">Average:----------</p> 
+      <p style="float:right;width: 50%" id="humidity_average">Average:----------</p><br /> 
+      <button style="align:right; position: relative; right: 120px; border-radius: 30px; width:25%" id="btn2" value = "Temperature average">Request</button>
+      <button style="align:left; position: relative; left: 120px; border-radius: 30px; width:25%" id="btn6" value = "Humidity average">Request</button><br />
+      <p style="float:left;width:50%" id="temperature_minimum">Minimum:----------</p> 
+      <p style="float: right; width: 50%" id="humidity_minimum">Minimum:----------</p><br /> 
+      <button style="align:right; position: relative; right: 120px; border-radius: 30px; width:25%" id="btn3" value ="Temperature minimum">Request</button>
+      <button style="align:left; position: relative; left: 120px; border-radius: 30px; width:25%" id="btn7" value = "Humidity minimum">Request</button><br />
+      <p style="float:left;width:50%" id="temperature_maximum">Maximum:----------</p> 
+      <p style="float: right; width: 50%" id="humidity_maximum">Maximum:----------</p><br /> 
+      <button style="align:right; position: relative; right: 120px; border-radius: 30px;width:25%" id="btn4" value = "Temperature maximum">Request</button>
+      <button style="align:left; position: relative; left: 120px; border-radius: 30px;width:25%" id="btn8" value = "Humidity maximum">Request</button><br />
+      <button style="float:left; position: relative; top: 30; left: 130px; border-radius: 30px;width:25%" id="btn9" value = "conversion">Unit conversion</button><br />
+    </div>
+    <div id="connection_details">
+      <label for="host">host:</label>
+      <input type="text" id="host" value="localhost" style="background:#ff0000;"/><br />
+      <label for="port">port:</label>
+      <input type="text" id="port" value="8888" style="background:#ff0000;"/><br />
+      <label for="uri">uri:</label>
+      <input type="text" id="uri" value="/ws" style="background:#ff0000;"/><br />
+      <input type="submit" id="open" value="open" />
+    </div>
+  </body>
+</html>
